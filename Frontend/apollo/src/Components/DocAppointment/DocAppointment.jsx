@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './DocAppointment.css';
 import femaleDoctorImg from '../assests/female-doctor.png';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,9 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import maleDoctorImg from '../assests/male-doctor.png';
 import Payment from '../Payment.jsx';
 import Navbar from '../Navbar/Navbar.jsx';
+import apiClient, { buildApiUrl } from '../../api/client.js';
 
 function DocAppointment() {
-  const { departmentName, doctorId } = useParams();
+  const { departmentName: departmentSlug, doctorId } = useParams();
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,12 +32,12 @@ function DocAppointment() {
   useEffect(() => {
     const fetchDoctorDetails = async () => {
       try {
-        if (!departmentName || !doctorId) {
+        if (!departmentSlug || !doctorId) {
           setError('Department name or doctor ID not provided');
           return;
         }
 
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}/departments/${departmentName}`);
+  const response = await apiClient.get(`/departments/${departmentSlug}`);
         const doctors = response.data;
 
         // Find the doctor with the matching doctorId
@@ -62,7 +62,7 @@ function DocAppointment() {
     };
 
     fetchDoctorDetails();
-  }, [departmentName, doctorId]);
+  }, [departmentSlug, doctorId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -74,7 +74,7 @@ function DocAppointment() {
 
   const handlePayment = async () => {
     try {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/payments/create-payment-intent`, {
+  const response = await fetch(buildApiUrl('/payments/create-payment-intent'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: patientDetails.amount }), 
@@ -103,7 +103,7 @@ function DocAppointment() {
     }
 
     try {
-  await axios.post(`${import.meta.env.VITE_API_URL}/patients`, patientDetails);
+  await apiClient.post('/patients', patientDetails);
 
       // Clear form fields after successful submission
       setPatientDetails({
