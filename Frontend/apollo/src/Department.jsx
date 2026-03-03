@@ -3,7 +3,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import Navbar from './Components/Navbar/Navbar.jsx';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import graduationHat from './Components/assests/graduation-hat.png';
 import talking from './Components/assests/talking.png';
@@ -12,6 +11,7 @@ import maleDoctorImg from './Components/assests/male-doctor.png';
 import './Department.css';
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@chakra-ui/react";
 import Cookies from 'js-cookie';
+import apiClient from './api/client.js';
 
 // eslint-disable-next-line react/prop-types
 function Department({ departmentName, departmentApiSlug }) {
@@ -24,7 +24,7 @@ function Department({ departmentName, departmentApiSlug }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/departments/${departmentApiSlug}`);
+        const response = await apiClient.get(`/departments/${departmentApiSlug}`);
         setDoctors(response.data);
         setFilteredDoctors(response.data);
         setFilters({ experience: '', gender: '', language: '' });
@@ -33,7 +33,7 @@ function Department({ departmentName, departmentApiSlug }) {
       }
     };
     fetchData();
-  }, [departmentName]);
+  }, [departmentApiSlug]);
   // Function to apply filters and update filtered doctors
   const applyFilters = () => {
     let filtered = doctors;
