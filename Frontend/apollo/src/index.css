@@ -2,3 +2,54 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+:root {
+	--bg: #f4fbfd;
+	--surface: #ffffff;
+	--surface-soft: #ecf9ff;
+	--text: #0f172a;
+	--muted: #475569;
+	--primary: #0ea5c6;
+	--primary-dark: #0284c7;
+	--border: #dbeafe;
+	--radius-sm: 8px;
+	--radius-md: 14px;
+	--radius-lg: 20px;
+	--shadow-sm: 0 4px 14px rgba(2, 132, 199, 0.08);
+	--shadow-md: 0 10px 26px rgba(2, 132, 199, 0.14);
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body,
+#root {
+	min-height: 100%;
+}
+
+body {
+	background: var(--bg);
+	color: var(--text);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	line-height: 1.5;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+a {
+	color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}

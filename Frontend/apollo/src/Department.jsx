@@ -14,7 +14,7 @@ import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Moda
 import Cookies from 'js-cookie';
 
 // eslint-disable-next-line react/prop-types
-function Department({ departmentName }) {
+function Department({ departmentName, departmentApiSlug }) {
   const [doctors, setDoctors] = useState([]);
   const isLoggedIn = Cookies.get('loggedIn') === 'true';
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,8 +24,7 @@ function Department({ departmentName }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // eslint-disable-next-line react/prop-types
-        const response = await axios.get(`http://localhost:3000/departments/${departmentName.toLowerCase().replace(' ', '-')}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/departments/${departmentApiSlug}`);
         setDoctors(response.data);
         setFilteredDoctors(response.data);
         setFilters({ experience: '', gender: '', language: '' });
@@ -52,7 +51,18 @@ function Department({ departmentName }) {
       filtered = filtered.filter(doctor => doctor.gender === filters.gender);
     }
     if (filters.language) {
-      filtered = filtered.filter(doctor => doctor.languagesSpoken.includes(filters.language));
+      filtered = filtered.filter((doctor) => {
+        const languages = Array.isArray(doctor.languagesSpoken)
+          ? doctor.languagesSpoken
+          : String(doctor.languagesSpoken || '')
+              .split(',')
+              .map((language) => language.trim())
+              .filter(Boolean);
+
+        return languages.some(
+          (language) => language.toLowerCase() === filters.language.toLowerCase()
+        );
+      });
     }
 
     setFilteredDoctors(filtered);
@@ -137,7 +147,7 @@ function Department({ departmentName }) {
                   <p>{doctor.languagesSpoken}</p>
                 </div>
                 {isLoggedIn ? (
-                  <Link to={`/book-appointment/${departmentName.toLowerCase()}/${doctor._id}`}>
+                  <Link to={`/book-appointment/${departmentApiSlug}/${doctor._id}`}>
                     <button className='mt-3 button-91'>Book Consult with Doctor</button>
                   </Link>
                 ) : (

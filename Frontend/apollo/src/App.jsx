@@ -17,22 +17,22 @@ import OTP from './Components/OTP/otp-provider.jsx';
 import { loadStripe } from '@stripe/stripe-js';
 
 const departments = [
-  { name: "Anesthesiologist", path: "anaesthesia" },
-  { name: "Cardiologist", path: "cardiology" },
-  { name: "Dentist", path: "dental" },
-  { name: "Dermatologist", path: "dermatology" },
-  { name: "ENT Specialist", path: "ent" },
-  { name: "Gastroenterologist", path: "gastroenterology" },
-  { name: "Gynecologist", path: "gynecologist" },
-  { name: "Nephrologist", path: "nephrology" },
-  { name: "Neurologist", path: "neurology" },
-  { name: "Ophthalmologist", path: "ophthalmology" },
-  { name: "Oncologist", path: "oncology" },
-  { name: "Orthopedic Surgeon", path: "orthopedic" },
-  { name: "Pediatrician", path: "pediatrics" },
-  { name: "Pulmonologist", path: "pulmonology" },
-  { name: "Radiologist", path: "radiology" },
-  { name: "Urologist", path: "urology" },
+  { name: "Anesthesiologist", path: "anaesthesia", apiSlug: "anesthesiologist" },
+  { name: "Cardiologist", path: "cardiology", apiSlug: "cardiologist" },
+  { name: "Dentist", path: "dental", apiSlug: "dentist" },
+  { name: "Dermatologist", path: "dermatology", apiSlug: "dermatologist" },
+  { name: "ENT Specialist", path: "ent", apiSlug: "ent-specialist" },
+  { name: "Gastroenterologist", path: "gastroenterology", apiSlug: "gastroenterologist" },
+  { name: "Gynecologist", path: "gynecologist", apiSlug: "gynecologist" },
+  { name: "Nephrologist", path: "nephrology", apiSlug: "nephrologist" },
+  { name: "Neurologist", path: "neurology", apiSlug: "neurologist" },
+  { name: "Ophthalmologist", path: "ophthalmology", apiSlug: "ophthalmologist" },
+  { name: "Oncologist", path: "oncology", apiSlug: "oncologist" },
+  { name: "Orthopedic Surgeon", path: "orthopedic", apiSlug: "orthopedic-surgeon" },
+  { name: "Pediatrician", path: "pediatrics", apiSlug: "pediatrician" },
+  { name: "Pulmonologist", path: "pulmonology", apiSlug: "pulmonologist" },
+  { name: "Radiologist", path: "radiology", apiSlug: "radiologist" },
+  { name: "Urologist", path: "urology", apiSlug: "urologist" },
 ];
 
 const stripePromise = loadStripe('pk_test_51POxSU05WctnSMfqFTIUfM6SV20oJZDH6EveZE1NImOkThwgtNUPNifYtyQ1yp4wEpSdIajmShzQnfCyyDBpsMEo009thK6PFO');
@@ -47,7 +47,7 @@ function App() {
           <Route
             key={department.path}
             path={`/departments/${department.path}`}
-            element={<Department departmentName={department.name} />}
+            element={<Department departmentName={department.name} departmentApiSlug={department.apiSlug} />}
           />
         ))}
         <Route path="/book-appointment/:departmentName/:doctorId" element={<Elements stripe={stripePromise}><DocAppointment /></Elements>} />

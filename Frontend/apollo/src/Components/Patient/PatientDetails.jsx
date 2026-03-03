@@ -48,7 +48,7 @@ function PatientDetails() {
                 const decodedToken = decodeToken(token);
                 const userEmail = decodedToken.email;
                 console.log(userEmail)
-                const response = await axios.get('http://localhost:3000/patients');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/patients`);
                 const filteredPatients = response.data.filter(patient => patient.email === userEmail);
                 setPatients(filteredPatients);
                 setLoading(false);
@@ -64,7 +64,7 @@ function PatientDetails() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:3000/patients/${id}`);
+            await axios.delete(`${import.meta.env.VITE_API_URL}/patients/${id}`);
             setPatients(prevPatients => prevPatients.filter(patient => patient._id !== id));
         } catch (error) {
             console.error('Error deleting patient:', error);
@@ -86,7 +86,7 @@ function PatientDetails() {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`http://localhost:3000/patients/${editPatient._id}`, editedPatientData);
+            const response = await axios.put(`${import.meta.env.VITE_API_URL}/patients/${editPatient._id}`, editedPatientData);
             const updatedPatient = response.data;
             setPatients(prevPatients => prevPatients.map(patient => patient._id === updatedPatient._id ? updatedPatient : patient));
             setEditPatient(null);

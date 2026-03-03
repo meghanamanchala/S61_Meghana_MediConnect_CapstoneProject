@@ -1,120 +1,117 @@
 .nav-section {
-    display: flex;
-    align-items: center;
-    background-color: #caf0f8;
-    padding: 20px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    padding: 14px 40px;
 }
 
-.nav-section ul {
+.nav-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 150px;
+    border-radius: 10px;
+}
+
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-link-item a {
+    position: relative;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: #0f172a;
+    padding: 8px 14px;
+    transition: all 0.3s ease;
+}
+
+.nav-link-item a:hover {
+    color: #0284c7;
+}
+
+.nav-link-item a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background-color: #0284c7;
+    transition: width 0.3s ease;
+}
+
+.nav-link-item a:hover::after {
     width: 100%;
-    margin: 0;
-    padding: 0;
-    list-style-type: none; 
 }
 
-.nav-section img.logo {
-    width: 170px;
-    height: auto;
-    transition: transform 0.2s ease;
+.logout-btn {
+    border: none;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.nav-section img.logo:hover {
-    transform: scale(1.1);
+.logout-btn:hover {
+    background: #0284c7;
+    transform: translateY(-2px);
 }
 
-.nav-section .account-container {
-    margin-left: auto;
-}
-
-.nav-section .account {
-    width: 70px;
-    height: 70px;
+.account {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    margin-left: 20px;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
 
-.nav-section .account:hover {
-    transform: scale(1.1);
-}
-
-.nav-section a {
-    font-weight: 600;
-    text-decoration: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    text-shadow: 2px 0px 4px rgba(0, 0, 0, 0.149);
-    margin-left: 10rem;
-    display: inline-block;
-    background-color: black;
-}
-
-.nav-section a:hover {
-    background-color: aliceblue;
-    color: blue;
+.account:hover {
     transform: scale(1.05);
 }
-@media only screen and (max-width: 768px) {
+
+.auth-popover {
+    border: 1px solid #e0f2fe !important;
+    background: #f8fdff !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+}
+
+.auth-link {
+    display: block;
+    color: #0369a1;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* 🔹 Mobile */
+@media (max-width: 768px) {
     .nav-section {
-        display: flex;
-        align-items: center;
-        background-color: #caf0f8;
-        height: auto;
-        padding: 10px;
-        overflow: hidden;
-        flex-direction: column;
+        padding: 14px 20px;
     }
 
-    nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    nav li {
-        padding: 10px;
-        white-space: nowrap;
-    }
-
-    nav img.logo {
-        width: 120px;
-        margin-left: 0;
-    }
-
-    .account-container {
-        margin-right: 0;
-    }
-
-    .account {
-        width: 50px;
-        margin-left: 0;
-    }
-
-    nav a {
-        font-weight: 600;
-        text-decoration: none;
-        color: white;
-        padding: 10px;
-        border-radius: 20px;
-        text-align: center;
-        font-size: 14px;
-        margin-left: 0;
-        margin-top: 10px;
-        background-color: black;
-    }
-
-    nav a:hover {
-        background-color: aliceblue;
-        color: blue;
+    .nav-center {
+        display: none;
     }
 }

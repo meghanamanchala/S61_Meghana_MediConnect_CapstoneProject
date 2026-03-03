@@ -2,36 +2,41 @@ const express = require('express');
 const router = express.Router();
 const Department = require('./modeldep.js');
 
-//Different department name and model
+//Different department name, model and route aliases
 const departments = [
-  { name: 'Anesthesiologist', model: Department.AnaesthesiaModel },
-  { name: 'Cardiologist', model: Department.CardiologyModel },
-  { name: 'Dentist', model: Department.DentalModel },
-  { name: 'Dermatologist', model: Department.DermatologyModel },
-  { name: 'ENT Specialist', model: Department.ENTModel },
-  { name: 'Gastroenterologist', model: Department.GastroenterologyModel },
-  { name: 'Gynecologist', model: Department.GynecologistModel },
-  { name: 'Nephrologist', model: Department.NephrologyModel },
-  { name: 'Neurologist', model: Department.NeurologyModel },
-  { name: 'Ophthalmologist', model: Department.OphthalmologyModel },
-  { name: 'Oncologist', model: Department.OncologyModel },
-  { name: 'Orthopedic Surgeon', model: Department.OrthopedicModel },
-  { name: 'Pediatrician', model: Department.PediatricsModel },
-  { name: 'Pulmonologist', model: Department.PulmonologyModel },
-  { name: 'Radiologist', model: Department.RadiologyModel },
-  { name: 'Urologist', model: Department.UrologyModel }
+  { name: 'Anesthesiologist', model: Department.AnaesthesiaModel, routeAliases: ['anesthesiologist', 'anaesthesia'] },
+  { name: 'Cardiologist', model: Department.CardiologyModel, routeAliases: ['cardiologist', 'cardiology'] },
+  { name: 'Dentist', model: Department.DentalModel, routeAliases: ['dentist', 'dental'] },
+  { name: 'Dermatologist', model: Department.DermatologyModel, routeAliases: ['dermatologist', 'dermatology'] },
+  { name: 'ENT Specialist', model: Department.ENTModel, routeAliases: ['ent-specialist', 'ent'] },
+  { name: 'Gastroenterologist', model: Department.GastroenterologyModel, routeAliases: ['gastroenterologist', 'gastroenterology'] },
+  { name: 'Gynecologist', model: Department.GynecologistModel, routeAliases: ['gynecologist'] },
+  { name: 'Nephrologist', model: Department.NephrologyModel, routeAliases: ['nephrologist', 'nephrology'] },
+  { name: 'Neurologist', model: Department.NeurologyModel, routeAliases: ['neurologist', 'neurology'] },
+  { name: 'Ophthalmologist', model: Department.OphthalmologyModel, routeAliases: ['ophthalmologist', 'ophthalmology'] },
+  { name: 'Oncologist', model: Department.OncologyModel, routeAliases: ['oncologist', 'oncology'] },
+  { name: 'Orthopedic Surgeon', model: Department.OrthopedicModel, routeAliases: ['orthopedic-surgeon', 'orthopedic'] },
+  { name: 'Pediatrician', model: Department.PediatricsModel, routeAliases: ['pediatrician', 'pediatrics'] },
+  { name: 'Pulmonologist', model: Department.PulmonologyModel, routeAliases: ['pulmonologist', 'pulmonology'] },
+  { name: 'Radiologist', model: Department.RadiologyModel, routeAliases: ['radiologist', 'radiology'] },
+  { name: 'Urologist', model: Department.UrologyModel, routeAliases: ['urologist', 'urology'] }
 ];
 
 
 departments.forEach(department => {
-// GET Endpoint
-  router.get(`/${department.name.toLowerCase().replace(' ', '-')}`, async (req, res) => {
-    try {
-      const departments = await department.model.find();
-      res.json(departments);
-    } catch (err) {
-      res.status(500).json({ Message: err.message });
-    }
+  const defaultSlug = department.name.toLowerCase().replace(/\s+/g, '-');
+  const routeAliases = [...new Set([...(department.routeAliases || []), defaultSlug])];
+
+  // GET Endpoints (supports aliases for backward compatibility)
+  routeAliases.forEach((slug) => {
+    router.get(`/${slug}`, async (req, res) => {
+      try {
+        const departments = await department.model.find();
+        res.json(departments);
+      } catch (err) {
+        res.status(500).json({ Message: err.message });
+      }
+    });
   });
 
   //Post Endpoint

@@ -23,6 +23,22 @@ import noida from '../assests2/noida.jpg'
 import rourkela from '../assests2/rourkela.jpg'
 import trichy from '../assests2/trichy.jpg'
 import visakhapatnam from '../assests2/visakhapatnam.jpg'
+import ahmedabadIcon from '../assests/ahmedabad_city.svg'
+import bangaloreIcon from '../assests/bangalore_city.svg'
+import bhubaneshwarIcon from '../assests/bhubaneshwar_city.svg'
+import chennaiIcon from '../assests/chennai_city.svg'
+import delhiIcon from '../assests/delhi_city.svg'
+import guwahatiIcon from '../assests/guwahati_city.svg'
+import hyderabadIcon from '../assests/hyderabad_city.svg'
+import indoreIcon from '../assests/indore_city.svg'
+import kakinadaIcon from '../assests/kakinada_city.svg'
+import kolkataIcon from '../assests/kolkata_city.svg'
+import maduraiIcon from '../assests/madurai_city.svg'
+import mumbaiIcon from '../assests/mumbai_city.svg'
+import mysoreIcon from '../assests/mysore_city.svg'
+import nashikIcon from '../assests/nashik_city.svg'
+import lucknowIcon from '../assests/lucknow_city.svg'
+import defaultLocationIcon from '../assests/rourkela-main.svg'
 
 const locationsData = [
   { name: "Ahmedabad", address: "123 Street, Ahmedabad", phoneNumber: "+91 1234567890", image: ahmedabad },
@@ -52,4 +68,27 @@ const locationsData = [
   { name: "Visakhapatnam", address: "HIJ Street, Visakhapatnam", phoneNumber: "+91 5678901234", image: visakhapatnam }
 ];
 
-export default locationsData;
+const locationIcons = {
+  Ahmedabad: ahmedabadIcon,
+  Bangalore: bangaloreIcon,
+  Bhubaneshwar: bhubaneshwarIcon,
+  Chennai: chennaiIcon,
+  Delhi: delhiIcon,
+  Guwahati: guwahatiIcon,
+  Hyderabad: hyderabadIcon,
+  Indore: indoreIcon,
+  Kakinada: kakinadaIcon,
+  Kolkata: kolkataIcon,
+  Lucknow: lucknowIcon,
+  Madhurai: maduraiIcon,
+  Mumbai: mumbaiIcon,
+  Mysore: mysoreIcon,
+  Nashik: nashikIcon
+};
+
+const locationsDataWithIcons = locationsData.map((location) => ({
+  ...location,
+  icon: locationIcons[location.name] || defaultLocationIcon
+}));
+
+export default locationsDataWithIcons;

@@ -1,218 +1,58 @@
 .register-page {
-    background-color: #CAF0F8;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 70px 16px 20px;
 }
 
-.register-form{
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: white; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    width: 500px;
-    height: 640px;
+.register-form {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
 }
 
 .register-form label {
-    font-weight: bold;
-    font-size: 25px;
-   
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
 .register-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    margin-top: 2px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .register-form .error {
-    color: red;
-    margin-bottom: 5px;
-
+  color: #dc2626;
+  display: block;
+  margin-bottom: 8px;
 }
-.button-19 {
-    appearance: button;
-    background-color: #1c89f6a1;
-    border: solid transparent;
-    border-radius: 16px;
-    border-width: 0 0 4px;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-family: din-round,sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .8px;
-    line-height: 20px;
-    margin: 10px 0px;
-    outline: none;
-    overflow: visible;
-    padding: 13px 16px;
-    text-align: center;
-    text-transform: uppercase;
-    touch-action: manipulation;
-    transform: translateZ(0);
-    transition: filter .2s;
-    user-select: none;
-    -webkit-user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
-    width: 150px;
-  }
-  
-  .button-19:after {
-    background-clip: padding-box;
-    background-color: #1cd5f6;
-    border: solid transparent;
-    border-radius: 16px;
-    border-width: 0 0 4px;
-    bottom: -4px;
-    content: "";
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: -1;
-  }
-  
-  .button-19:main,
-  .button-19:focus {
-    user-select: auto;
-  }
-  
-  .button-19:hover:not(:disabled) {
-    filter: brightness(1.1);
-    -webkit-filter: brightness(1.1);
-  }
-  
-  .button-19:disabled {
-    cursor: auto;
-  }
-  
-  .button-19:active {
-    border-width: 4px 0 0;
-    background: none;
-  }
 
-  @media only screen and (max-width: 768px) {
-    .register-page {
-      background-color: #CAF0F8;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10vh 5vw;
-    }
-  
-    .register-form {
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      background-color: white; 
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-      height: auto;
-    }
-  
-    .register-form label {
-      font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-  
-    .register-form input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-  
-    .register-form .error {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-  
-    .button-19 {
-      appearance: button;
-      background-color: #1c89f6a1;
-      border: solid transparent;
-      border-radius: 16px;
-      border-width: 0 0 4px;
-      box-sizing: border-box;
-      color: #FFFFFF;
-      cursor: pointer;
-      display: inline-block;
-      font-family: din-round, sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: .8px;
-      line-height: 20px;
-      margin: 10px 0px;
-      outline: none;
-      overflow: visible;
-      padding: 13px 16px;
-      text-align: center;
-      text-transform: uppercase;
-      touch-action: manipulation;
-      transform: translateZ(0);
-      transition: filter .2s;
-      user-select: none;
-      -webkit-user-select: none;
-      vertical-align: middle;
-      white-space: nowrap;
-      width: 100%;
-      max-width: 150px;
-      padding: 10px;
-    }
-  
-    .button-19:after {
-      background-clip: padding-box;
-      background-color: #1cd5f6;
-      border: solid transparent;
-      border-radius: 16px;
-      border-width: 0 0 4px;
-      bottom: -4px;
-      content: "";
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: -1;
-    }
-  
-    .button-19:hover:not(:disabled) {
-      filter: brightness(1.1);
-      -webkit-filter: brightness(1.1);
-    }
-  
-    .button-19:disabled {
-      cursor: auto;
-    }
-  
-    .button-19:active {
-      border-width: 4px 0 0;
-      background: none;
-    }
-  
-    .back-arrow {
-      position: absolute;
-      width: 50px;
-      top: 20px;
-      left: 20px;
-    }
+.button-19 {
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0ea5c6, #0284c7);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.button-19:hover {
+  filter: brightness(1.05);
+}
+
+@media (max-width: 768px) {
+  .register-form {
+    padding: 18px;
   }
+}
   

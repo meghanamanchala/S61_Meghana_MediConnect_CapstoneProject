@@ -3,26 +3,29 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding: 20px;
 }
 
 .payment-container {
   background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   width: 100%;
   max-width: 500px;
   text-align: center;
 }
 
 .payment-title {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
+  margin-bottom: 12px;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .payment-instructions {
   margin-bottom: 20px;
+  color: var(--muted);
 }
 
 .payment-form {
@@ -34,32 +37,39 @@
 .card-element {
   margin-bottom: 20px;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
 }
 
 .pay-button {
-  background-color: #6200ea;
+  background: linear-gradient(135deg, #0ea5c6, #0284c7);
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 22px;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.pay-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .payment-status {
-  margin-top: 20px;
+  margin-top: 14px;
   font-size: 16px;
+  font-weight: 600;
 }
 
 .success {
-  color: green;
+  color: #16a34a;
 }
 
 .error {
-  color: red;
+  color: #dc2626;
 }
 
 .payment-request-container {
@@ -68,75 +78,28 @@
 
 @media only screen and (max-width: 768px) {
   .payment-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    min-height: calc(100vh - 20px);
+    padding: 12px;
   }
 
   .payment-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+    padding: 16px;
   }
 
   .payment-title {
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 22px;
   }
 
   .payment-instructions {
-    margin-bottom: 20px;
-    font-size: 16px;
-  }
-
-  .payment-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-size: 14px;
   }
 
   .card-element {
-    margin-bottom: 20px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    margin-bottom: 14px;
   }
 
   .pay-button {
-    background-color: #6200ea;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
     width: 100%;
-    max-width: 300px;
-  }
-
-  .payment-status {
-    margin-top: 20px;
-    font-size: 16px;
-  }
-
-  .success {
-    color: green;
-  }
-
-  .error {
-    color: red;
-  }
-
-  .payment-request-container {
-    margin-top: 20px;
+    font-size: 15px;
   }
 }

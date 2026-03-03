@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import logo from "../assests/logo.jpeg";
 import account from '../assests/account.png'
 import "./Navbar.css";
@@ -19,46 +18,63 @@ function Navbar() {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:3000/users/logout');
-        if (response.status === 200) {
-            Cookies.remove('loggedIn', { path: '/' });
-            Cookies.remove('username', { path: '/' });
-            Cookies.remove('token',{path:'/'});
-            setIsLoggedIn(false);
-            console.log("Logged out successfully");
-        } else {
-            console.error("Logout failed:", response.data.error);
-        }
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/logout`);
+      if (response.status === 200) {
+        Cookies.remove('loggedIn', { path: '/' });
+        Cookies.remove('username', { path: '/' });
+        Cookies.remove('token',{path:'/'});
+        setIsLoggedIn(false);
+      }
     } catch (error) {
-        console.error("Logout error:", error);
+      console.error("Logout error:", error);
     }
-};
-
+  };
 
   return (
     <nav className='nav-section'>
-      <ul>
-        <li><img className='logo' src={logo} alt="Logo" /></li>
-        <li><Link to="/" style={{ textDecoration: 'none' }}>HOME</Link></li>
-        <li><Link to="/appointment" style={{ textDecoration: 'none' }}>APPOINTMENT</Link></li>
-        <li><Link to="/patients"style={{ textDecoration: 'none' }}>PATIENTS DATA</Link></li>
-        <li><Link to="/queries" style={{ textDecoration: 'none' }}>QUERIES</Link></li>
-        <li className="account-container">
-        {isLoggedIn ? (
-        <Link style={{textDecoration: 'none'}}onClick={handleLogout}>LOGOUT</Link> 
+      <div className='nav-container'>
+        
+        {/* Left - Logo */}
+        <div className='nav-left'>
+          <Link to="/">
+            <img className='logo' src={logo} alt="Logo" />
+          </Link>
+        </div>
+
+        {/* Center - Navigation Links */}
+        <div className='nav-center'>
+          <div className='nav-link-item'>
+            <NavLink to="/">HOME</NavLink>
+          </div>
+          <div className='nav-link-item'>
+            <NavLink to="/appointment">APPOINTMENT</NavLink>
+          </div>
+          <div className='nav-link-item'>
+            <NavLink to="/patients">PATIENTS DATA</NavLink>
+          </div>
+          <div className='nav-link-item'>
+            <NavLink to="/queries">QUERIES</NavLink>
+          </div>
+        </div>
+
+        {/* Right - Account / Logout */}
+        <div>
+          {isLoggedIn ? (
+            <button className='logout-btn' onClick={handleLogout}>LOGOUT</button>
           ) : (
-          <Popover>
-            <PopoverTrigger>
-              <img className='account' src={account} cursor='pointer' alt="account" />
-            </PopoverTrigger>
-            <PopoverContent style={{ border: '1px solid #ccc', backgroundColor:"#CAF0F8",margin:'10px',padding: '1em' }}>
-              <PopoverCloseButton style={{position:'relative',width:'20px',marginLeft:"300px",border:'none',backgroundColor:'transparent'}}/>
-              <Link style={{position:'relative',right:'100px',textDecoration: 'none' }} to='/login'>Login</Link>
-            </PopoverContent>
+            <Popover>
+              <PopoverTrigger>
+                <img className='account' src={account} alt="account" />
+              </PopoverTrigger>
+              <PopoverContent className='auth-popover'>
+                <PopoverCloseButton />
+                <Link className='auth-link' to='/login'>Login</Link>
+              </PopoverContent>
             </Popover>
           )}
-          </li>
-      </ul>
+        </div>
+
+      </div>
     </nav>
   );
 }
