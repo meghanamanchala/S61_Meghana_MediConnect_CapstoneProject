@@ -1,33 +1,89 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
-import Navbar from '../Navbar/Navbar.jsx';
-import './Queries.css'; 
+import React, { useState } from "react";
+import Navbar from "../Navbar/Navbar.jsx";
+import "./Queries.css";
 
 function Queries() {
+  const [query, setQuery] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!query.trim()) return;
+
+    // Later you can connect API here
+    console.log("Query Submitted:", query);
+
+    setSubmitted(true);
+    setQuery("");
+
+    setTimeout(() => {
+      setSubmitted(false);
+    }, 3000);
+  };
+
   return (
     <>
       <Navbar />
-      <div className='container mt-5'>
-      <div className='mt-5 mb-5'>
-        <h1 className='question-query-page'>Have Questions? We’re Here to Help!</h1>
-        <p className='para-query'>Welcome to our Queries section! If you have any questions about our services, appointment bookings, or any other inquiries, feel free to reach out to us. We’re dedicated to providing you with the information and assistance you need.</p>
-      </div>
-      <div className='mt-5 mb-5'>
-        <h2 className='quer'>Submit Your Query:</h2>
-        <p className='para-query'>Please use the form below to submit your query. Our team will review it and get back to you as soon as possible. Thank you for reaching out to us!</p>
-        <textarea className='query-textarea'>  </textarea>
-        <button className='btn btn-primary submit-btn'>Submit</button>
-      </div>
-      <div className='mt-5 mb-5'>
-        <h2 className='question-query-page'>Contact Information:</h2>
-        <p className='para-query'>For further assistance, you can contact us directly:</p>   
-          <li className='para-query'>Phone: 1234567890</li>
-          <li className='para-query'>Email: apollohospital@gmail.com</li>
-          <li className='para-query'>Office Hours: 24/7</li>
-      </div>
+
+      <div className="query-page">
+
+        {/* HERO SECTION */}
+        <div className="query-header">
+          <h1>Have Questions? We’re Here to Help!</h1>
+          <p>
+            If you have any questions about our services, appointment bookings,
+            or hospital facilities, feel free to reach out. Our support team is
+            available 24/7 to assist you.
+          </p>
+        </div>
+
+        {/* FORM SECTION */}
+        <div className="query-card">
+          <h2>Submit Your Query</h2>
+          <p>
+            Please describe your concern below. Our team will respond as soon
+            as possible.
+          </p>
+
+          <form onSubmit={handleSubmit}>
+            <textarea
+              className="query-textarea"
+              placeholder="Type your query here..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            ></textarea>
+
+            <button type="submit" className="submit-btn">
+              Submit Query
+            </button>
+          </form>
+
+          {submitted && (
+            <div className="success-message">
+              ✅ Your query has been submitted successfully!
+            </div>
+          )}
+        </div>
+
+        {/* CONTACT INFO */}
+        <div className="contact-card">
+          <h2>Contact Information</h2>
+          <div className="contact-item">
+            <strong>Phone:</strong> +91 1234567890
+          </div>
+          <div className="contact-item">
+            <strong>Email:</strong> support@apollohospital.com
+          </div>
+          <div className="contact-item">
+            <strong>Office Hours:</strong> 24/7 Support
+          </div>
+        </div>
+
       </div>
     </>
-  )
+  );
 }
 
-export default Queries
+export default Queries;
