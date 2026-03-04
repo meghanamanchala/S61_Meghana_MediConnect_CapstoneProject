@@ -1,9 +1,14 @@
 const express = require('express');
-const stripe = require('stripe')('sk_test_51POxSU05WctnSMfqyB2IHUvSaQ1O2Si1Dk7IWFotfmQm96ekX6Hk1cKwf4TODaHQ55YNKhOkG1U3L5XAFfPNjEJh001kuptBIw'); 
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeSecretKey ? require('stripe')(stripeSecretKey) : null;
 const router = express.Router();
 
 router.post('/create-payment-intent', async (req, res) => {
     try {
+      if (!stripe) {
+        return res.status(500).send('Stripe is not configured');
+      }
+
       const { amount } = req.body;
   
       if (!amount) {
