@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import logo from "../assests/logo.jpeg";
-import account from '../assests/account.png'
+import logo from "../assets/common/logo.jpeg";
+import account from '../assets/common/account.png'
 import "./Navbar.css";
 import axios from 'axios'; 
 import Cookies from 'js-cookie';
@@ -14,6 +14,7 @@ import {
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(Cookies.get('loggedIn') === 'true');
+  const [accountImgError, setAccountImgError] = useState(false);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -63,13 +64,26 @@ function Navbar() {
           {isLoggedIn ? (
             <button className='logout-btn' onClick={handleLogout}>LOGOUT</button>
           ) : (
-            <Popover>
+            <Popover placement='bottom-end'>
               <PopoverTrigger>
-                <img className='account' src={account} alt="account" />
+                <button type='button' className='account-trigger' aria-label='Account options'>
+                  {accountImgError ? (
+                    <span className='account-fallback' aria-hidden='true'>👤</span>
+                  ) : (
+                    <img
+                      className='account'
+                      src={account}
+                      alt='account'
+                      onError={() => setAccountImgError(true)}
+                    />
+                  )}
+                </button>
               </PopoverTrigger>
               <PopoverContent className='auth-popover'>
-                <PopoverCloseButton />
-                <Link className='auth-link' to='/login'>Login</Link>
+                <PopoverCloseButton className='auth-close' />
+                <div className='auth-actions'>
+                  <Link className='auth-link' to='/login'>Login</Link>
+                </div>
               </PopoverContent>
             </Popover>
           )}

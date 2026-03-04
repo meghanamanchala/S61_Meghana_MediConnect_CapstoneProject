@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../Navbar";
 import "./PatientDetails.css";
 import Cookies from "js-cookie";
 import apiClient from "../../api/client.js";

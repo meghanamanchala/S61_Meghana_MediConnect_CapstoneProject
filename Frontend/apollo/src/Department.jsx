@@ -2,14 +2,13 @@
 // export default Department;
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
-import Navbar from './Components/Navbar/Navbar.jsx';
+import { Navbar } from './Components';
 import { Link } from 'react-router-dom';
-import graduationHat from './Components/assests/graduation-hat.png';
-import talking from './Components/assests/talking.png';
-import femaleDoctorImg from './Components/assests/female-doctor.png';
-import maleDoctorImg from './Components/assests/male-doctor.png';
+import graduationHat from './Components/assets/common/graduation-hat.png';
+import talking from './Components/assets/common/talking.png';
+import femaleDoctorImg from './Components/assets/common/female-doctor.png';
+import maleDoctorImg from './Components/assets/common/male-doctor.png';
 import './Department.css';
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@chakra-ui/react";
 import Cookies from 'js-cookie';
 import apiClient from './api/client.js';
 
@@ -17,7 +16,6 @@ import apiClient from './api/client.js';
 function Department({ departmentName, departmentApiSlug }) {
   const [doctors, setDoctors] = useState([]);
   const isLoggedIn = Cookies.get('loggedIn') === 'true';
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [filters, setFilters] = useState({ experience: '', gender: '', language: '' });
 
@@ -151,26 +149,11 @@ function Department({ departmentName, departmentApiSlug }) {
                     <button className='mt-3 button-91'>Book Consult with Doctor</button>
                   </Link>
                 ) : (
-                  <>
-                    <Button className='mt-3 button-91' onClick={onOpen}>Book Consult with Doctor</Button>
-                    <Modal isOpen={isOpen} onClose={onClose} size="sm">
-                      <ModalOverlay />
-                      <ModalContent className="modal-content">
-                        <ModalHeader className="modal-header">
-                          <p>Login</p></ModalHeader>
-                        <ModalBody className="modal-body">
-                          <p>Please login to book a consultation.</p>
-                          <Link to="/login" className="modal-link">
-                            <button className="modal-button button-18">Login</button>
-                          </Link>
-                        </ModalBody>
-                        <hr className='line' />
-                        <ModalFooter className="modal-footer">
-                          <Button onClick={onClose} className="modal-button button-18 ">Close</Button>
-                        </ModalFooter>
-                      </ModalContent>
-                    </Modal>
-                  </>
+                  <Link
+                    to={`/login?redirect=${encodeURIComponent(`/book-appointment/${departmentApiSlug}/${doctor._id}`)}`}
+                  >
+                    <button className='mt-3 button-91'>Book Consult with Doctor</button>
+                  </Link>
                 )}
               </div>
             </li>

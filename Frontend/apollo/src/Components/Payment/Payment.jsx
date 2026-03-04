@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation ,useNavigate} from 'react-router-dom';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import './payment.css';
+import './Payment.css';
 
 function Payment() {
   const stripe = useStripe();

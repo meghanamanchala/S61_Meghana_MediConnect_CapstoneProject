@@ -1,20 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import HomePage from './Components/HomePage/HomePage';
-import Appointment from './Components/Appointment/Appointment.jsx';
-import Queries from './Components/Queries/Queries.jsx';
-import DocAppointment from './Components/DocAppointment/DocAppointment.jsx';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { HomePage, Appointment, Queries, DocAppointment, LoginForm, RegisterForm, PatientDetails, Payment, OTP } from './Components';
 import Department from './Department.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginForm from './Components/Loginpage/Login.jsx';
-import RegisterForm from './Components/RegisterPage/Register.jsx';
-// import DoctorLogin from './Components/DoctorLoginPage/DoctorLogin.jsx';
-import PatientDetails from './Components/Patient/PatientDetails.jsx';
-import Payment from './Components/Payment.jsx';
+// import { DoctorLogin } from './Components';
 import { Elements } from '@stripe/react-stripe-js';
-import OTP from './Components/OTP/otp-provider.jsx';
 import { loadStripe } from '@stripe/stripe-js';
+import Cookies from 'js-cookie';
 
 const departments = [
   { name: "Anesthesiologist", path: "anaesthesia", apiSlug: "anesthesiologist" },
@@ -36,6 +29,18 @@ const departments = [
 ];
 
 const stripePromise = loadStripe('pk_test_51POxSU05WctnSMfqFTIUfM6SV20oJZDH6EveZE1NImOkThwgtNUPNifYtyQ1yp4wEpSdIajmShzQnfCyyDBpsMEo009thK6PFO');
+
+function RequireAuth({ children }) {
+  const location = useLocation();
+  const isLoggedIn = Cookies.get('loggedIn') === 'true' && Boolean(Cookies.get('token'));
+
+  if (!isLoggedIn) {
+    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <>
@@ -50,7 +55,14 @@ function App() {
             element={<Department departmentName={department.name} departmentApiSlug={department.apiSlug} />}
           />
         ))}
-        <Route path="/book-appointment/:departmentName/:doctorId" element={<Elements stripe={stripePromise}><DocAppointment /></Elements>} />
+        <Route
+          path="/book-appointment/:departmentName/:doctorId"
+          element={
+            <RequireAuth>
+              <Elements stripe={stripePromise}><DocAppointment /></Elements>
+            </RequireAuth>
+          }
+        />
         <Route path='/register' element={<RegisterForm />}/>
         <Route path="/login" element={<LoginForm />} />
         {/* <Route path='/doctorlogin' element={<DoctorLogin />}/> */}

@@ -3,7 +3,7 @@
 // import axios from 'axios';
 // import './DoctorLogin.css';
 // import { Link } from 'react-router-dom';
-// import arrow from '../assests/arrow.png';
+// import arrow from '../assets/common/arrow.png';
 
 // function DoctorLogin() {
 //     const [docAdmin, setDocAdmin] = useState({

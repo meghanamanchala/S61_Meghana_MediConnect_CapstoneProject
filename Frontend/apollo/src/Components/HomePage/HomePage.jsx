@@ -1,10 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../Navbar";
 import "./HomePage.css";
-import locationsData from "../data/locationsData";
-import doctor from "../assests/doctor.jpeg";
-import prathap from "../assests/prathap-reddy-img.jpg";
+import { locationsData } from "../data";
+import doctor from "../assets/common/doctor.jpeg";
+import prathap from "../assets/common/prathap-reddy-img.jpg";
 
 function HomePage() {
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(0);

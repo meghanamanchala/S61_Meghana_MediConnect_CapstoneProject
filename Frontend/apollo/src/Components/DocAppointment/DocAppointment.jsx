@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './DocAppointment.css';
-import femaleDoctorImg from '../assests/female-doctor.png';
+import femaleDoctorImg from '../assets/common/female-doctor.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import maleDoctorImg from '../assests/male-doctor.png';
-import Payment from '../Payment.jsx';
-import Navbar from '../Navbar/Navbar.jsx';
+import maleDoctorImg from '../assets/common/male-doctor.png';
+import Payment from '../Payment';
+import Navbar from '../Navbar';
 import apiClient, { buildApiUrl } from '../../api/client.js';
 
 function DocAppointment() {

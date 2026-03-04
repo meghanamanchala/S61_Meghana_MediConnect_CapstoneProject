@@ -2,13 +2,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Login.css";
-import LoginImg from "../assests/login.jpg";
-import { Link } from "react-router-dom";
-import arrow from "../assests/arrow.png";
+import LoginImg from "../assets/common/login.jpg";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import arrow from "../assets/common/arrow.png";
 import Cookies from "js-cookie";
 import GoogleButton from 'react-google-button';
 
 function LoginForm() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryRedirectTo = new URLSearchParams(location.search).get('redirect');
+  const redirectTo = queryRedirectTo || location.state?.redirectTo;
   const [loginUser, setLoginUser] = useState({
     username: "",
     password: "",
@@ -73,8 +77,8 @@ function LoginForm() {
         Cookies.set("loggedIn", "true");
         Cookies.set("username", loginUser.username);
         Cookies.set("email", loginUser.email);
-        
-        window.location.href = "/";
+
+        navigate(redirectTo || "/", { replace: true });
         window.alert("Login successful");
         console.log(response.data);
         console.log(token)
@@ -108,6 +112,10 @@ function LoginForm() {
         </div>
         <div className="login-form">
           <form onSubmit={handleSubmit}>
+            <div className="auth-head">
+              <h2>Welcome Back</h2>
+              <p>Sign in to continue to MediConnect</p>
+            </div>
             <label className="login-username-label">Username:</label>
             <input
               className="login-username-input"

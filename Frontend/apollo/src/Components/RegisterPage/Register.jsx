@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.css';
 import { Link } from 'react-router-dom';
-import arrow from '../assests/arrow.png';
+import arrow from '../assets/common/arrow.png';
 
 function Register() {
     const [registerUser, setRegisterUser] = useState({
@@ -105,6 +105,10 @@ function Register() {
             </Link>
             <div className='register-page'>
                 <form className='register-form' onSubmit={handleSubmit}>
+                    <div className='auth-head'>
+                        <h2>Create Account</h2>
+                        <p>Register to start booking appointments</p>
+                    </div>
                     <div>
                         <label className="register-label">Username:</label>
                         <input
@@ -142,6 +146,7 @@ function Register() {
                     <div className='registerBtn-container'>
                         <button className="button-19" type="submit">Register</button>
                     </div>
+                    <p className='register-login-link'>Already have an account? <Link to='/login'>Login</Link></p>
                 </form>
             </div>
         </>

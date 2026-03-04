@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import Navbar from '../Navbar/Navbar.jsx';
+import Navbar from '../Navbar';
 import './Appointment.css';
-import departmentdata from '../data/departmentdata.jsx';
-import next from '../deparment/nextArrow.png';
+import { departmentdata } from '../data';
+import next from '../assets/departments/nextArrow.png';
 import { Link } from 'react-router-dom';
 
 function Appointment() {

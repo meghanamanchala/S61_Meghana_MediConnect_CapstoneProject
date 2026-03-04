@@ -1,0 +1,10 @@
+export { default as Appointment } from './Appointment';
+export { default as DocAppointment } from './DocAppointment';
+export { default as HomePage } from './HomePage';
+export { default as LoginForm } from './LoginPage';
+export { default as Navbar } from './Navbar';
+export { default as OTP } from './OTP';
+export { default as PatientDetails } from './Patient';
+export { default as Payment } from './Payment';
+export { default as Queries } from './Queries';
+export { default as RegisterForm } from './RegisterPage';

@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import Navbar from "../Navbar/Navbar.jsx";
+import Navbar from "../Navbar";
 import "./Queries.css";
 
 function Queries() {
