@@ -2,16 +2,23 @@ const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const jwt = require("jsonwebtoken");
 
 const Auth = express.Router();
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const configuredCallbackUrl = (process.env.GOOGLE_CALLBACK_URL || "").trim();
+const normalizedBackendUrl = (process.env.BACKEND_URL || "").trim().replace(/\/+$/, "");
+const googleCallbackUrl =
+  configuredCallbackUrl ||
+  (normalizedBackendUrl ? `${normalizedBackendUrl}/auth/google/callback` : "/auth/google/callback");
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || "/auth/google/callback",
+      callbackURL: googleCallbackUrl,
+      proxy: true,
       scope: ["profile", "email"],
     },
     (accessToken, refreshToken, profile, done) => {
@@ -59,10 +66,23 @@ Auth.get(
     failureRedirect: `${frontendUrl}/login`,
   }),
   (req, res) => {
-    res.cookie('loggedIn', 'true');
-    res.cookie('username', req.user.displayName); 
-    res.cookie('email', req.user.emails?.[0]?.value || '');
-    res.redirect(`${frontendUrl}/`);
+    const email = req.user.emails?.[0]?.value || "";
+    const username = req.user.displayName || "Google User";
+    const tokenPayload = {
+      userId: req.user.id || req.user._id || username,
+      username,
+      email,
+      provider: "google",
+    };
+
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    const authSuccessUrl = new URL("/auth/success", frontendUrl);
+    authSuccessUrl.searchParams.set("token", token);
+    authSuccessUrl.searchParams.set("username", username);
+    authSuccessUrl.searchParams.set("email", email);
+
+    res.redirect(authSuccessUrl.toString());
   }
 );
 

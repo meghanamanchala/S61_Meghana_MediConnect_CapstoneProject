@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { HomePage, Appointment, Queries, DocAppointment, LoginForm, RegisterForm, PatientDetails, Payment } from './Components';
 import Department from './Department.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,6 +29,31 @@ const departments = [
 ];
 
 const stripePromise = loadStripe('pk_test_51POxSU05WctnSMfqFTIUfM6SV20oJZDH6EveZE1NImOkThwgtNUPNifYtyQ1yp4wEpSdIajmShzQnfCyyDBpsMEo009thK6PFO');
+
+function OAuthSuccess() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    const username = params.get('username') || '';
+    const email = params.get('email') || '';
+
+    if (token) {
+      Cookies.set('token', token, { path: '/' });
+      Cookies.set('loggedIn', 'true', { path: '/' });
+      Cookies.set('username', username, { path: '/' });
+      Cookies.set('email', email, { path: '/' });
+      navigate('/', { replace: true });
+      return;
+    }
+
+    navigate('/login', { replace: true });
+  }, [location.search, navigate]);
+
+  return null;
+}
 
 function RequireAuth({ children }) {
   const location = useLocation();
@@ -65,6 +90,7 @@ function App() {
         />
         <Route path='/register' element={<RegisterForm />}/>
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/auth/success" element={<OAuthSuccess />} />
         {/* <Route path='/doctorlogin' element={<DoctorLogin />}/> */}
         <Route path="/patients" element={<PatientDetails />} />
         <Route path='/payment' element={<Elements stripe={stripePromise}><Payment /></Elements>} />
