@@ -10,6 +10,10 @@ function Payment() {
   const location = useLocation();
   const navigate = useNavigate(); 
   const { clientSecret, patientDetails } = location.state || {};
+  const amount = patientDetails?.amount ?? 0;
+  const patientName = patientDetails
+    ? `${patientDetails.firstName} ${patientDetails.lastName}`
+    : 'Patient';
   const [paymentStatus, setPaymentStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,7 +30,7 @@ function Payment() {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: `${patientDetails.firstName} ${patientDetails.lastName}`,
+          name: patientName,
         },
       },
     });
@@ -56,22 +60,56 @@ function Payment() {
   // 4000 0027 6000 3184 - Card Number
   
   return (
-    <div className='payment-box'>
-    <div className="payment-container">
-      <h2 className="payment-title">Complete Your Payment</h2>
-      <p className="payment-instructions">
-        Please enter your card details below to complete the payment of ₹{patientDetails.amount} for your appointment.
-      </p>
-      <form onSubmit={handleSubmit} className="payment-form">
-        <CardElement className="card-element" />
-        <button type="submit" disabled={!stripe || isLoading} className="pay-button">
-          {isLoading ? 'Processing...' : 'Pay with Card'}
-        </button>
-        <div className={`payment-status ${paymentStatus.includes('succeeded') ? 'success' : 'error'}`}>
-          {paymentStatus}
+    <div className='payment-page'>
+      <div className="payment-shell">
+        <div className="payment-summary-card">
+          <p className="payment-badge">Secure Checkout</p>
+          <h2 className="payment-title">Confirm Appointment Payment</h2>
+          <p className="payment-instructions">
+            Review your details and complete the transaction securely.
+          </p>
+
+          <div className="payment-summary-list">
+            <div className="summary-row">
+              <span>Patient</span>
+              <strong>{patientName}</strong>
+            </div>
+            <div className="summary-row">
+              <span>Payment Method</span>
+              <strong>Credit / Debit Card</strong>
+            </div>
+            <div className="summary-row amount-row">
+              <span>Total Amount</span>
+              <strong>₹{amount}</strong>
+            </div>
+          </div>
+
+          <p className="payment-note">You will be redirected to the home page once payment is successful.</p>
         </div>
-      </form>
-    </div>
+
+        <div className="payment-form-card">
+          <form onSubmit={handleSubmit} className="payment-form">
+            <label className="card-label">Card Details</label>
+            <CardElement className="card-element" />
+
+            <button type="submit" disabled={!stripe || isLoading || !clientSecret} className="pay-button">
+              {isLoading ? 'Processing...' : `Pay ₹${amount}`}
+            </button>
+
+            {paymentStatus && (
+              <div className={`payment-status ${paymentStatus.includes('succeeded') ? 'success' : 'error'}`}>
+                {paymentStatus}
+              </div>
+            )}
+
+            {!clientSecret && (
+              <div className="payment-status error">
+                Payment session is missing. Please restart the booking flow.
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

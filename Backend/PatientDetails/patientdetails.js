@@ -9,7 +9,9 @@ const patientDetailsSchema = new Schema({
   date: Date,
   amount: Number,
   reason: String,
-  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' } // Reference to Doctor model
+  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  doctorName: String,
+  doctorDepartment: String
 });
 
 const PatientDetails = mongoose.model('PatientDetails', patientDetailsSchema);

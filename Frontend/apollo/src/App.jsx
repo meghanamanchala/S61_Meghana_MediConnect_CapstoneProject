@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { HomePage, Appointment, Queries, DocAppointment, LoginForm, RegisterForm, PatientDetails, Payment, OTP } from './Components';
+import { HomePage, Appointment, Queries, DocAppointment, LoginForm, RegisterForm, PatientDetails, Payment } from './Components';
 import Department from './Department.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import { DoctorLogin } from './Components';
@@ -68,7 +68,6 @@ function App() {
         {/* <Route path='/doctorlogin' element={<DoctorLogin />}/> */}
         <Route path="/patients" element={<PatientDetails />} />
         <Route path='/payment' element={<Elements stripe={stripePromise}><Payment /></Elements>} />
-        <Route path='/otp' element={<OTP />}/>
         </Routes>
     </>
   );

@@ -126,17 +126,6 @@ function LoginForm() {
             {validationErrors.username && (
               <div className="error">{validationErrors.username}</div>
             )}
-            <br />
-            <label className="login-password-label">Password:</label>
-            <input
-              className="login-password-input"
-              type="password"
-              value={loginUser.password}
-              onChange={(e) => handleChange(e, "password")}
-            />
-            {validationErrors.password && (
-              <div className="error">{validationErrors.password}</div>
-            )}
             <label className="login-email-label">Email:</label>
             <input
               className="login-email-input"
@@ -146,6 +135,16 @@ function LoginForm() {
             />
             {validationErrors.email && (
               <div className="error">{validationErrors.email}</div>
+            )}
+            <label className="login-password-label">Password:</label>
+            <input
+              className="login-password-input"
+              type="password"
+              value={loginUser.password}
+              onChange={(e) => handleChange(e, "password")}
+            />
+            {validationErrors.password && (
+              <div className="error">{validationErrors.password}</div>
             )}
             {error && <div className="error">{error}</div>}
             <div className="loginBtn-container">

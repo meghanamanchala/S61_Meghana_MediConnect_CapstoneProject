@@ -9,6 +9,7 @@ import maleDoctorImg from '../assets/common/male-doctor.png';
 import Payment from '../Payment';
 import Navbar from '../Navbar';
 import apiClient, { buildApiUrl } from '../../api/client.js';
+import Cookies from 'js-cookie';
 
 function DocAppointment() {
   const { departmentName: departmentSlug, doctorId } = useParams();
@@ -16,6 +17,7 @@ function DocAppointment() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
+  const [sessionEmail, setSessionEmail] = useState('');
   const navigate = useNavigate();
 
   const [patientDetails, setPatientDetails] = useState({
@@ -26,8 +28,46 @@ function DocAppointment() {
     date: '',
     amount: '',
     reason: '',
-    doctor: doctorId
+    doctor: doctorId,
+    doctorName: '',
+    doctorDepartment: departmentSlug || ''
   });
+
+  const getEmailFromSession = () => {
+    const cookieEmail = Cookies.get('email');
+    if (cookieEmail) return cookieEmail;
+
+    const token = Cookies.get('token');
+    if (!token) return '';
+
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+          .join('')
+      );
+      const decoded = JSON.parse(jsonPayload);
+      return decoded?.email || '';
+    } catch {
+      return '';
+    }
+  };
+
+  useEffect(() => {
+    const sessionEmail = getEmailFromSession();
+    if (!sessionEmail) return;
+
+    setSessionEmail(sessionEmail);
+    setPatientDetails((prevState) => ({
+      ...prevState,
+      email: prevState.email || sessionEmail,
+    }));
+  }, []);
+
+  const isEmailReadOnly = Boolean(sessionEmail);
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
@@ -47,7 +87,10 @@ function DocAppointment() {
           setDoctor(selectedDoctor);
           setPatientDetails(prevState => ({
             ...prevState,
-            amount: selectedDoctor.amount
+            amount: selectedDoctor.amount,
+            doctor: selectedDoctor._id,
+            doctorName: selectedDoctor.name || '',
+            doctorDepartment: departmentSlug || ''
           }));
         } else {
           setError('Doctor not found');
@@ -109,12 +152,14 @@ function DocAppointment() {
       setPatientDetails({
         firstName: '',
         lastName: '',
-        email: '',
+        email: sessionEmail || '',
         phoneNumber: '',
         date: '',
         amount: '',
         reason: '',
-        doctor: doctorId 
+        doctor: doctorId,
+        doctorName: doctor?.name || '',
+        doctorDepartment: departmentSlug || ''
       });
       
       toast.success('Patient details submitted successfully');
@@ -131,11 +176,11 @@ function DocAppointment() {
       <ToastContainer />
       <div className="doctor-boxing">
         {loading ? (
-          <p>Loading...</p>
+          <p className="appointment-message">Loading...</p>
         ) : error ? (
-          <p>{error}</p>
+          <p className="appointment-message error">{error}</p>
         ) : doctor ? (
-          <>
+          <div className="appointment-layout">
             <div className="doctor-info">
               <div className="doctor-image-box">
                 <img className="doctor-picture" src={doctor.gender === 'Male' ? maleDoctorImg : femaleDoctorImg} alt="doctor-img" />
@@ -175,7 +220,15 @@ function DocAppointment() {
               <div className="input-row">
                 <div className="input-group">
                   <label htmlFor="email">Email:</label>
-                  <input type="email" id="email" name="email" value={patientDetails.email} onChange={handleInputChange} required />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={patientDetails.email}
+                    onChange={handleInputChange}
+                    readOnly={isEmailReadOnly}
+                    required
+                  />
                 </div>
                 <div className="input-group">
                   <label htmlFor="phoneNumber">Phone Number:</label>
@@ -201,9 +254,9 @@ function DocAppointment() {
               <button type="submit">Submit</button> 
               {clientSecret && <Payment clientSecret={clientSecret} />}
             </form>
-          </>
+          </div>
         ) : (
-          <p>No doctor details found</p>
+          <p className="appointment-message">No doctor details found</p>
         )}
       </div>
     </>

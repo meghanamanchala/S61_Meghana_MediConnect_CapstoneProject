@@ -1,11 +1,43 @@
 const express = require('express');
 const PatientDetails = require('./patientdetails.js');
+const mongoose = require('mongoose');
+const DepartmentModels = require('../DepartmentRoutes/modeldep.js');
 
 const router = express.Router();
 
+const departmentModelEntries = Object.entries(DepartmentModels);
+
+const findDoctorByIdAcrossDepartments = async (doctorId) => {
+  if (!doctorId || !mongoose.Types.ObjectId.isValid(doctorId)) {
+    return null;
+  }
+
+  for (const [departmentKey, model] of departmentModelEntries) {
+    const doctor = await model.findById(doctorId).select('name').lean();
+    if (doctor) {
+      return {
+        doctorName: doctor.name,
+        doctorDepartment: departmentKey,
+      };
+    }
+  }
+
+  return null;
+};
+
 router.post('/', async (req, res) => {
     try {
-      const patientDetails = new PatientDetails(req.body);
+      const payload = { ...req.body };
+
+      if (!payload.doctorName && payload.doctor) {
+        const resolvedDoctor = await findDoctorByIdAcrossDepartments(payload.doctor);
+        if (resolvedDoctor) {
+          payload.doctorName = resolvedDoctor.doctorName;
+          payload.doctorDepartment = payload.doctorDepartment || resolvedDoctor.doctorDepartment;
+        }
+      }
+
+      const patientDetails = new PatientDetails(payload);
       await patientDetails.save();
       res.status(201).json(patientDetails);
     } catch (err) {
@@ -15,8 +47,42 @@ router.post('/', async (req, res) => {
   
   router.get('/', async (req, res) => {
     try {
-      const patients = await PatientDetails.find().populate('doctor');
-      res.json(patients);
+      const patients = await PatientDetails.find().populate('doctor').lean();
+
+      const enrichedPatients = await Promise.all(
+        patients.map(async (patient) => {
+          if (patient.doctorName) {
+            return patient;
+          }
+
+          if (patient.doctor && typeof patient.doctor === 'object' && patient.doctor.name) {
+            return { ...patient, doctorName: patient.doctor.name };
+          }
+
+          const doctorId =
+            typeof patient.doctor === 'string'
+              ? patient.doctor
+              : patient.doctor?._id;
+
+          if (!doctorId) {
+            return patient;
+          }
+
+          const resolvedDoctor = await findDoctorByIdAcrossDepartments(doctorId);
+
+          if (!resolvedDoctor) {
+            return patient;
+          }
+
+          return {
+            ...patient,
+            doctorName: resolvedDoctor.doctorName,
+            doctorDepartment: patient.doctorDepartment || resolvedDoctor.doctorDepartment,
+          };
+        })
+      );
+
+      res.json(enrichedPatients);
     } catch (err) {
       console.error('Error fetching patient details:', err);
       res.status(500).json({ message: err.message });
