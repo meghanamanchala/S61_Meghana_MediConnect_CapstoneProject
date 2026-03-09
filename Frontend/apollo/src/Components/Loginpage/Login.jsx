@@ -20,6 +20,7 @@ function LoginForm() {
   });
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e, field) => {
     setLoginUser({ ...loginUser, [field]: e.target.value });
@@ -65,6 +66,8 @@ function LoginForm() {
       return;
     }
 
+    setIsSubmitting(true);
+
     try {
   const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         username: loginUser.username,
@@ -94,6 +97,8 @@ function LoginForm() {
         setError("An error occurred while logging in");
         console.error(err);
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -148,8 +153,8 @@ function LoginForm() {
             )}
             {error && <div className="error">{error}</div>}
             <div className="loginBtn-container">
-              <button className="button-19" type="submit">
-                Login
+              <button className="button-19" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Logging in..." : "Login"}
               </button>
             </div>
             <div>
@@ -158,7 +163,7 @@ function LoginForm() {
               </h3>
             </div>
             <div className='google-auth'>
-             <GoogleButton onClick={handleGoogleLogin}/>
+             <GoogleButton onClick={handleGoogleLogin} disabled={isSubmitting} />
             </div>
           </form>
         </div>

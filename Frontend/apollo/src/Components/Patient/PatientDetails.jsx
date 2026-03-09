@@ -5,6 +5,7 @@ import Navbar from "../Navbar";
 import "./PatientDetails.css";
 import Cookies from "js-cookie";
 import apiClient from "../../api/client.js";
+import PageLoader from "../Common/PageLoader";
 
 function PatientDetails() {
   const PAGE_SIZE = 6;
@@ -306,7 +307,7 @@ function PatientDetails() {
     return (
       <>
         <Navbar />
-        <div className="center-message">Loading appointments...</div>
+        <PageLoader message="Loading appointments..." />
       </>
     );
   }

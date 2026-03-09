@@ -145,6 +145,13 @@
   box-shadow: 0 10px 20px rgba(2,132,199,0.3);
 }
 
+.register-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Login Link */
 
 .register-login-link {

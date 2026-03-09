@@ -15,6 +15,7 @@ function Register() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -61,6 +62,8 @@ function Register() {
 
     if (Object.keys(errors).length > 0) return;
 
+    setIsSubmitting(true);
+
     try {
       const formData = new FormData();
 
@@ -88,6 +91,8 @@ function Register() {
       }
     } catch (error) {
       console.log("Registration error", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -121,6 +126,7 @@ function Register() {
             type="file"
             accept="image/*"
             onChange={handleFileChange}
+            disabled={isSubmitting}
             hidden
           />
         </div>
@@ -134,6 +140,7 @@ function Register() {
             value={registerUser.username}
             onChange={(e) => handleChange(e, "username")}
             placeholder="Enter your username"
+            disabled={isSubmitting}
           />
           {formErrors.username && (
             <span className="error">{formErrors.username}</span>
@@ -149,6 +156,7 @@ function Register() {
             value={registerUser.email}
             onChange={(e) => handleChange(e, "email")}
             placeholder="Enter your email"
+            disabled={isSubmitting}
           />
           {formErrors.email && (
             <span className="error">{formErrors.email}</span>
@@ -164,13 +172,16 @@ function Register() {
             value={registerUser.password}
             onChange={(e) => handleChange(e, "password")}
             placeholder="Enter your password"
+            disabled={isSubmitting}
           />
           {formErrors.password && (
             <span className="error">{formErrors.password}</span>
           )}
         </div>
 
-        <button className="register-btn">Register</button>
+        <button className="register-btn" disabled={isSubmitting}>
+          {isSubmitting ? "Registering..." : "Register"}
+        </button>
 
         <p className="register-login-link">
           Already have an account? <Link to="/login">Login</Link>

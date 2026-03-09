@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Cookies from 'js-cookie';
+import PageLoader from './Components/Common/PageLoader.jsx';
 
 const departments = [
   { name: "Anesthesiologist", path: "anaesthesia", apiSlug: "anesthesiologist" },
@@ -52,7 +53,7 @@ function OAuthSuccess() {
     navigate('/login', { replace: true });
   }, [location.search, navigate]);
 
-  return null;
+  return <PageLoader message="Signing you in..." />;
 }
 
 function RequireAuth({ children }) {

@@ -10,6 +10,7 @@ import Payment from '../Payment';
 import Navbar from '../Navbar';
 import apiClient, { buildApiUrl } from '../../api/client.js';
 import Cookies from 'js-cookie';
+import PageLoader from '../Common/PageLoader';
 
 function DocAppointment() {
   const { departmentName: departmentSlug, doctorId } = useParams();
@@ -176,7 +177,7 @@ function DocAppointment() {
       <ToastContainer />
       <div className="doctor-boxing">
         {loading ? (
-          <p className="appointment-message">Loading...</p>
+          <PageLoader message="Loading appointment details..." />
         ) : error ? (
           <p className="appointment-message error">{error}</p>
         ) : doctor ? (

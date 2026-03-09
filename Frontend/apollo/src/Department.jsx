@@ -11,6 +11,7 @@ import maleDoctorImg from './Components/assets/common/male-doctor.png';
 import './Department.css';
 import Cookies from 'js-cookie';
 import apiClient from './api/client.js';
+import PageLoader from './Components/Common/PageLoader.jsx';
 
 // eslint-disable-next-line react/prop-types
 function Department({ departmentName, departmentApiSlug }) {
@@ -18,16 +19,26 @@ function Department({ departmentName, departmentApiSlug }) {
   const isLoggedIn = Cookies.get('loggedIn') === 'true';
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [filters, setFilters] = useState({ experience: '', gender: '', language: '' });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError('');
+
       try {
         const response = await apiClient.get(`/departments/${departmentApiSlug}`);
         setDoctors(response.data);
         setFilteredDoctors(response.data);
         setFilters({ experience: '', gender: '', language: '' });
       } catch (err) {
+        setDoctors([]);
+        setFilteredDoctors([]);
+        setError('Failed to load doctors. Please try again.');
         console.error("Error while fetching data", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -80,6 +91,12 @@ function Department({ departmentName, departmentApiSlug }) {
   return (
     <>
       <Navbar />
+      {loading ? (
+        <PageLoader message="Loading doctors..." />
+      ) : error ? (
+        <div className="department-feedback error">{error}</div>
+      ) : (
+        <>
       <div className="filters">
         <div className='filter-heading'>
         <h3>Filter Doctors:</h3>
@@ -160,6 +177,8 @@ function Department({ departmentName, departmentApiSlug }) {
           ))}
         </ul>
       </div>
+        </>
+      )}
     </>
   );
 }
